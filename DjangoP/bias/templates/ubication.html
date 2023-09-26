@@ -60,7 +60,7 @@
             <div class="flex items-center">
                 <ul class="flex flex-row font-medium mt-0 mr-6 space-x-8 text-sm">
                     <li>
-                        <a href="#" class="text-gray-900 dark:text-white hover:underline" aria-current="page">Borrador</a>
+                        <a href="{% url 'drafts' %}" class="text-gray-900 dark:text-white hover:underline" aria-current="page">Borrador</a>
                     </li>
                     <li>
                         <a href="#" class="text-gray-900 dark:text-white hover:underline">Publicadas</a>
@@ -78,7 +78,7 @@
                         <a href="#" class="text-gray-900 dark:text-white hover:underline">Cubiertas</a>
                     </li>
                     <li>
-                        <a href="#" class="text-gray-900 dark:text-white hover:underline">Análisis</a>
+                        <a href="{% url 'analyze' %}" class="text-gray-900 dark:text-white hover:underline">Análisis</a>
                     </li>
                 </ul>
             </div>
@@ -141,7 +141,7 @@
                 <!-- Buttons -->
                 <div class="mt-4 text-center">
                     <button class="bg-blue-900 text-white px-4 py-2 rounded-full">Descargar Información</button>
-                    <a href="#" class="bg-blue-900 text-white px-4 py-2 rounded-full ml-2">Regresar</a>
+                    <a href="{% url 'informs_diagrams' %}" class="bg-blue-900 text-white px-4 py-2 rounded-full ml-2">Regresar</a>
                 </div>
             </div>
         </div>

@@ -51,7 +51,7 @@
             <div class="flex items-center">
                 <ul class="flex flex-row font-medium mt-0 mr-6 space-x-8 text-sm">
                     <li>
-                        <a href="#" class="text-gray-900 dark:text-white hover:underline" aria-current="page">Borrador</a>
+                        <a href="{% url 'drafts' %}" class="text-gray-900 dark:text-white hover:underline" aria-current="page">Borrador</a>
                     </li>
                     <li>
                         <a href="#" class="text-gray-900 dark:text-white hover:underline">Publicadas</a>
@@ -69,7 +69,7 @@
                         <a href="#" class="text-gray-900 dark:text-white hover:underline">Cubiertas</a>
                     </li>
                     <li>
-                        <a href="#" class="text-gray-900 dark:text-white hover:underline">Análisis</a>
+                        <a href="{% url 'analyze' %}" class="text-gray-900 dark:text-white hover:underline">Análisis</a>
                     </li>
                 </ul>
             </div>
@@ -96,7 +96,7 @@
                 <h1>ANÁLISIS</h1><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
                 <p class="text-center">¡Conoce tu histórico!</p>
                 <p class="text-center">Clickea a continuación</p>
-                <a href="#" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Ir a ver</a>
+                <a href="{% url 'informs_diagrams' %}" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Ir a ver</a>
             </figcaption>
         </figure>
     </div>    
