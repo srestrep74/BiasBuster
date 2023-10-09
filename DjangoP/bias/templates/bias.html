@@ -1,95 +1,17 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.1/flowbite.min.css" rel="stylesheet" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.1/flowbite.min.js"></script>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BiasBuster</title>
-    <link rel="icon" href="https://o.remove.bg/downloads/0bb1691f-27e0-473a-b628-25bb66821487/unnamed-removebg-preview.png">
-</head>   
-<body>
-    <!-- Navbar 1 - Blue one -->
-    <nav class="bg-blue-900 text-white">
-        <div class="flex flex-wrap justify-between items-center mx-auto max-w-full p-4">
-            <a href="#" class="flex items-center">
-                <img src="https://www.magneto365.com/wp-content/uploads/2022/09/Logo-magneto-v3.png" class="h-8 mr-3" alt="Magneto Logo" />
-                <span class="text-sm hover:underline; font-size: 16px;">Inicio</span>
-            </a>
-            
-        <!-- Breadcrumb -->
-        <nav class="flex justify-between" aria-label="Breadcrumb">
-            <ol class="inline-flex items-center mb-3 sm:mb-0">
-                <div class="flex items-center">
-                    <button id="dropdownDatabase" data-dropdown-toggle="dropdown-database" class="inline-flex items-center px-3 py-2 text-sm font-normal text-center text-white bg-blue-900 rounded-lg hover:bg-blue-900 focus:ring-4 focus:outline-none focus:ring-blue-100 dark:bg-gray-900 dark:hover:bg-gray-800 dark:text-white dark:focus:ring-gray-700">
-            </svg>Admin<svg class="w-2.5 h-2.5 ml-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
-            </svg></button>
-                <div id="dropdown-database" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
-                    <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefault">
-                    <li>
-                        <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Perfil</a>
-                    </li>
-                    <li>
-                        <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Configuración</a>
-                    </li>
-                    <li>
-                        <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Salir</a>
-                    </li>
-                    </ul>
-                </div>
-                </div>
-            </li>
-            </ol>
-        </nav>  
-        </div>
-    </nav>
-    
-    <!-- Navbar 2 - White one-->
-    <nav class="bg-gray-50 dark:bg-gray-700">
-        <div class="max-w-screen-xl px-4 py-3 mx-auto">
-            <div class="flex items-center">
-                <ul class="flex flex-row font-medium mt-0 mr-6 space-x-8 text-sm">
-                    <li>
-                        <a href="{% url 'drafts' %}" class="text-gray-900 dark:text-white hover:underline" aria-current="page">Borrador</a>
-                    </li>
-                    <li>
-                        <a href="#" class="text-gray-900 dark:text-white hover:underline">Publicadas</a>
-                    </li>
-                    <li>
-                        <a href="#" class="text-gray-900 dark:text-white hover:underline">Expiradas</a>
-                    </li>
-                    <li>
-                        <a href="#" class="text-gray-900 dark:text-white hover:underline">Inactivas</a>
-                    </li>
-                    <li>
-                        <a href="#" class="text-gray-900 dark:text-white hover:underline">Canceladas</a>
-                    </li>
-                    <li>
-                        <a href="#" class="text-gray-900 dark:text-white hover:underline">Cubiertas</a>
-                    </li>
-                    <li>
-                        <a href="{% url 'analyze' %}" class="text-gray-900 dark:text-white hover:underline">Análisis</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Cards 3 columns -->
-
-    <!--Job Offer-->
+{% include 'navbar.html' %}
+{% block content %}
     <div class="flex justify-center">
         <div class="w-1/3 p-4">
             <div class="bg-white border border-gray-200 rounded-lg shadow-md p-4">
                 <div class="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-                    <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Operador Punto De Venta - Tiendas Ara - Rionegro- Antioquia</h5>
+                    <h5><span style="background-color: #4A4450; font-size: 20px; border-radius: 8px; padding: 2px 8px; color: white;">Operador</span></h5>
+                    <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Punto De Venta - Tiendas Ara - Rionegro- Antioquia</h5>
                     <h1>Descripción de la vacante:</h1><br>
                     <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
                         En Tiendas ARA te estamos buscando!
                         Funciones del cargo: Atención al cliente de manera amable. Responder por manejo de Caja registradora. Surtir y Exhibir mercancía en la estantería. Asegurar control Operativo y Calidad de los productos y de los procesos. Mantener orden y limpieza de la tienda.  Asegurar el control de inventarios.
                         Disponibilidad de Lunes a Domingo en turnos rotativos con un día de descanso en la semana.
-                        Indispensable vivir en Rionegro Antioquia.
+                        <span style="background-color: #7824C8; border-radius: 8px; padding: 2px 8px; color: white;">Indispensable vivir en Rionegro Antioquia.</span>
                         Beneficios de trabajar con nosotros:
                         Contrato término INDEFINIDO.
                         Incremento salarial después de 3 meses.
@@ -159,5 +81,4 @@
             </div>
         </div>
     </div>
-</body>
-</html>
+{% endblock content %}
