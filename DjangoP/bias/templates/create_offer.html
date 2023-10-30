@@ -1,0 +1,59 @@
+{% include 'navbar.html' %}
+{% block content %}
+    <form method="POST" enctype="multipart/form-data" style="margin: 20px 150px;">
+        {% csrf_token %}
+
+        <div style="margin-bottom: 30px;" class="text-center">
+            <h2 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Crear Oferta</h2>
+        </div>
+
+        <div class="mb-6">
+            <label for="title" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Título de la oferta*</label>
+            <input type="text" id="title" name="title" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light">
+        </div>
+        
+        <div class="mb-6">
+            <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Descripción de la oferta*</label>
+            <input type="text" id="description" name="description" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light">
+        </div>
+
+        <div class="grid md:grid-cols-2 md:gap-6">
+            <div class="mb-6">
+                <label for="salary" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Salario*</label>
+                <input type="text" id="salary" name="salary" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light">
+            </div>
+            <div class="mb-6">
+                <label for="sectors" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Sectores*</label>
+                <input type="text " id="sectors" name="sectors" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light">
+            </div>
+        </div>
+
+        <div class="mb-6">
+            <label for="key_words" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Palabras claves*</label>
+            <input type="text" id="key_words" name="key_words" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light">
+        </div>
+
+        <div class="grid md:grid-cols-2 md:gap-6">
+            <div class="mb-6">
+                <label for="study_level" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nivel de estudio*</label>
+                <input type="text" id="study_level" name="study_level" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light">
+            </div>
+            <div class="mb-6">
+                <label for="charge" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Cargo*</label>
+                <input type="number" id="charge" name="charge" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light">
+            </div>
+        </div>
+
+        <div class="mb-6">
+            <label for="location" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Ubicación*</label>
+            <input type="text" id="location" name="location" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light">
+        </div>
+
+        <div style="margin-bottom: 5px;">
+            <center>
+                <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Guardar</button>
+            </center>
+        </div>
+
+    </form>
+{% endblock content %}
