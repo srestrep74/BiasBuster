@@ -1,10 +1,6 @@
 from django.shortcuts import render
 
 
-def drafts(request):
-    return render(request, 'drafts.html')
-
-
 def analyze(request):
     return render(request, 'analyze.html')
 

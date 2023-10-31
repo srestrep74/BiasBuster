@@ -1,12 +1,11 @@
 from django.contrib import admin
 from django.urls import path, include
-from .views import analyze, drafts, bias, informs_diagrams, ubication
+from .views import *
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('analyze/', analyze, name='analyze'),
-    path('drafts/', drafts, name='drafts'),
+    path('', analyze, name='analyze'),
     path('bias/', bias, name='bias'),
     path('informs_diagrams/', informs_diagrams, name='informs_diagrams'),
     path('ubication/', ubication, name='ubication'),

@@ -15,3 +15,9 @@ def createOffer(request):
         form = OfferForm()
 
     return render(request, 'create_offer.html', {'form': form})
+
+
+def drafts(request):
+    offers = Offer.objects.filter()
+
+    return render(request, 'drafts.html', {'offers': offers})

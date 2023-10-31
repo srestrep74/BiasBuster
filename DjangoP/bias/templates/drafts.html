@@ -14,14 +14,61 @@
         </div>
     </div>
     
-    <!-- Cards -->
-    <div class="max-w-sm mx-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700">
-        <div class="p-5">
-            <a href="{% url 'bias' %}">
-                <h1 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Operador Punto De Venta - Tiendas Ara - Rionegro- Antioquia</h1>
-                <p class="mb-3 text-sm font-normal text-gray-700 dark:text-gray-400">En Tiendas ARA te estamos buscando!
-                    Funciones del cargo: Atención al cliente de manera amable. Responder por manejo de Caja registradora. Surtir y Exhibir mercancía en la estantería. Asegurar control Operativo y Calidad de los productos y de los procesos...</p>
-            </a>
-        </div>
-    </div> 
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        {% for offer in offers %}
+            <div class="max-w-sm mx-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700">
+                <div class="p-5">
+                    <a href="{% url 'bias' %}">
+                        <h1 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{ offer.title }}</h1>
+                        <p class="mb-3 text-sm font-normal text-gray-700 dark:text-gray-400 truncate-description" style="max-height: 145px; overflow: hidden;">
+                            {{ offer.description }}
+                        </p>
+                        <div class="description-full hidden">
+                            {{ offer.description }}
+                        </div>
+                    </a>
+                    <button type="button" class="toggle-description">
+                        <span class="toggle-icon text-gray-500"><i class="fa-solid fa-ellipsis"></i></span>
+                        <span class="sr-only">Toggle Description</span>
+                    </button>  
+                </div>
+            </div> 
+        {% endfor %}
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const toggleButtons = document.querySelectorAll('.toggle-description');
+
+            toggleButtons.forEach(function (button) {
+                button.addEventListener('click', function () {
+                    const container = this.parentElement;
+                    const truncatedDescription = container.querySelector('.truncate-description');
+                    const fullDescription = container.querySelector('.description-full');
+                    const toggleIcon = this.querySelector('.toggle-icon'); // Obtener el ícono
+
+                    if (truncatedDescription.style.display === 'none' || truncatedDescription.style.display === '') {
+                        truncatedDescription.style.display = 'block'; // Mostrar la descripción truncada
+                        fullDescription.style.display = 'none'; // Ocultar el contenido completo
+                        toggleIcon.innerHTML = '<i class="fas fa-ellipsis-h"></i>'; // Cambiar el ícono a "..."
+                    } else {
+                        truncatedDescription.style.display = 'none'; // Ocultar la descripción truncada
+                        fullDescription.style.display = 'block'; // Mostrar el contenido completo
+                        toggleIcon.innerHTML = '<i class="fas fa-times"></i>'; // Cambiar el ícono a "x"
+                    }
+                });
+            });
+
+            const truncateElements = document.querySelectorAll('.truncate-description');
+
+            truncateElements.forEach(function (element) {
+                const fullHeight = element.scrollHeight;
+
+                if (fullHeight <= 100) {
+                    // El contenido se ajusta correctamente, ocultar el botón
+                    const toggleButton = element.parentElement.querySelector('.toggle-description');
+                    toggleButton.style.display = 'none';
+                }
+            });
+        });
+    </script>
 {% endblock content %}
