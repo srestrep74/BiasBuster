@@ -2,7 +2,11 @@ from django.shortcuts import render, redirect
 from .models import *
 from .forms import *
 import openai
-openai.api_key = "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"
+import environ
+
+env = environ.Env()
+environ.Env.read_env('../bias/')
+openai.api_key = env('API')
 
 
 def createOffer(request):
