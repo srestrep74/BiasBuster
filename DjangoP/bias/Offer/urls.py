@@ -5,4 +5,5 @@ from .views import *
 urlpatterns = [
     path('create_offer/', createOffer, name='create_offer'),
     path('drafts/', drafts, name='drafts'),
+    path('bias/<int:id>', bias, name='bias')
 ]

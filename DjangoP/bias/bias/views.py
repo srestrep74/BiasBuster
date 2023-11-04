@@ -4,11 +4,6 @@ from django.shortcuts import render
 def analyze(request):
     return render(request, 'analyze.html')
 
-
-def bias(request):
-    return render(request, 'bias.html')
-
-
 def informs_diagrams(request):
     return render(request, 'informs_diagrams.html')
 

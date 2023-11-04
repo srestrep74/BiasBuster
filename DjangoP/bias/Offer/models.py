@@ -33,9 +33,6 @@ class Suggestion(models.Model):
     highlight_words = models.TextField(blank=False, null=False)
     offer = models.ForeignKey(Offer, on_delete=models.CASCADE)
 
-    def __str__(self):
-        return self.id
-
 
 class Report(models.Model):
     id = models.AutoField(primary_key=True, editable=False, unique=True)
