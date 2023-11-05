@@ -51,6 +51,15 @@ def prompt(offer_id):
     else:
         xyzk, highlight_words, corrected_description = "", "", result
 
+    if int(xyzk[0]) > 0:
+        offer.bias.add(Bias.objects.get(pk=1))
+    if int(xyzk[1]) > 0:
+        offer.bias.add(Bias.objects.get(pk=2))
+    if int(xyzk[2]) > 0:
+        offer.bias.add(Bias.objects.get(pk=3))
+    if int(xyzk[3]) > 0:
+        offer.bias.add(Bias.objects.get(pk=4))
+    
     suggestion = Suggestion(
         corrected_description=corrected_description,
         highlight_words=highlight_words,

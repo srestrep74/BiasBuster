@@ -20,8 +20,7 @@ class Offer(models.Model):
     study_level = models.CharField(blank=False, null=False, max_length=45)
     charge = models.CharField(blank=False, null=False, max_length=45)
     location = models.CharField(blank=False, null=False, max_length=45)
-    #bias = models.ForeignKey(Bias, on_delete=models.CASCADE)
-    #company = models.ForeignKey(Company, on_delete=models.CASCADE)
+    bias = models.ManyToManyField(Bias)
 
     def __str__(self):
         return self.title
