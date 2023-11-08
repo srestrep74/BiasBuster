@@ -38,10 +38,10 @@ def prompt(offer_id):
         temperature=0.2,
         messages=[
             {
-                "role": "system", "content": "Eres una maquina analista de ofertas laborales, que se basa en el analisis del discurso. Unicamente detectas racismo, sexismo, xenofobia y edad, no otros sesgos. Siempre das tres respuestas, exactas y precisas. Respondes primero con cuatro numeros, que corresponden a cada tipo de sesgo respectivamente (Cada numero va a ser dado por la cantidad de oraciones con ese sesgo en la oferta que encuentres). Luego escribes exactamente la oración de la oferta donde detectaste el sesgo. Luego das una redacción completa de la oferta eliminando el sesgo, si es que existe alguna oración con sesgo, si todo esta sin sesgo, devuelves la oferta tal cual ingreso. Eres muy inclusivo en todos los sentidos, te gusta incluir a todas las personas. Tu formato como maquina es el siguiente: xyzk // o1--o2--...--on // tr. Donde x,y,z,k son los numeros del inicio. o1--o2--,...,--on son las oraciones con sesgo y tr es el texto corregido. Debes seguir ese formato al pie de la letra, reemplazando cada simbolo segun lo que analices."
+                "role": "system", "content": "Eres una maquina analista de ofertas laborales, que se basa en el analisis del discurso. Unicamente detectas racismo, sexismo, xenofobia y homofobia, no otros sesgos. Siempre das tres respuestas, exactas y precisas. Respondes primero con un número según el sesgo que encontraste en la oferta y marcala con 1 (Incluye los 4 sesgos inclusive si este no aparece, si no aparece marcalo con 0). Luego escribes exactamente la oración de la oferta donde detectaste el sesgo. Luego das una redacción completa de la oferta eliminando el sesgo, si es que existe alguna oración con sesgo, si todo esta sin sesgo, devuelves la oferta tal cual ingreso. Eres muy inclusivo en todos los sentidos, te gusta incluir a todas las personas. Tu formato como maquina es el siguiente: xyzk // o1--o2--...--on // tr. Donde x,y,z,k son los cuatro números que representan los sesgos que aparecen en la oferta, siengo 'x' el número para racismo, 'y' el número para sexismo, 'z' el número para xenofobia y 'k' el número para homofobia. o1--o2--,...,--on son las oraciones con sesgo y tr es el texto corregido. Debes seguir ese formato al pie de la letra, reemplazando cada simbolo segun lo que analices. Ejemplos de oraciones con sesgo: - Racismo: La empresa prefiere candidatos de una determinada etnia. - Sexismo: Se busca un candidato masculino para liderar el equipo. - Xenofobia: Se dará preferencia a candidatos locales sobre extranjeros. - Homofobia: Buscamos a alguien que no pertenezca a ningún tipo de comunidad LGBTI etc. Un ejemplo de output por tu parte sería: R0S1X1H0 // No se permiten mujeres porque solo sirven para barrer y traperar. No se permiten extranjeros y mucho menos venezolanos. // Se busca a una persona para realizar tareas de limpieza y mantenimiento. Se valora la experiencia y el compromiso. Se aceptan candidatos de todas las nacionalidades."
             },
             {
-                "role": "user", "content": f"Realiza el analisis para la siguiente oferta: {offer.description}"
+                "role": "user", "content": f"Genera un analisis con el siguiente formato. Tu formato como maquina es el siguiente: xyzk // o1--o2--...--on // tr. Donde x,y,z,k son los cuatro números que representan los sesgos que aparecen en la oferta, siengo 'x' el número para racismo, 'y' el número para sexismo, 'z' el número para xenofobia y 'k' el número para homofobia. o1--o2--,...,--on son las oraciones con sesgo y tr es el texto corregido. Debes seguir ese formato al pie de la letra, reemplazando cada simbolo segun lo que analices. La oferta es: {offer.description}"
             }
         ]
     )
@@ -55,13 +55,13 @@ def prompt(offer_id):
     else:
         xyzk, highlight_words, corrected_description = "", "", result
 
-    if int(xyzk[0]) > 0:
-        offer.bias.add(Bias.objects.get(pk=1))
     if int(xyzk[1]) > 0:
-        offer.bias.add(Bias.objects.get(pk=2))
-    if int(xyzk[2]) > 0:
-        offer.bias.add(Bias.objects.get(pk=3))
+        offer.bias.add(Bias.objects.get(pk=1))
     if int(xyzk[3]) > 0:
+        offer.bias.add(Bias.objects.get(pk=2))
+    if int(xyzk[5]) > 0:
+        offer.bias.add(Bias.objects.get(pk=3))
+    if int(xyzk[7]) > 0:
         offer.bias.add(Bias.objects.get(pk=4))
     
     suggestion = Suggestion(
