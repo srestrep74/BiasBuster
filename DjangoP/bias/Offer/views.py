@@ -90,3 +90,6 @@ def replaceOffer(request, id):
     offer.save()
 
     return redirect('drafts')
+
+
+

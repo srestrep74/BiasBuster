@@ -21,6 +21,7 @@ class Offer(models.Model):
     charge = models.CharField(blank=False, null=False, max_length=45)
     location = models.CharField(blank=False, null=False, max_length=45)
     bias = models.ManyToManyField(Bias)
+    date = models.DateField(auto_created=True, null=True, blank=True)
 
     def __str__(self):
         return self.title
