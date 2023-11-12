@@ -14,6 +14,8 @@ def createOffer(request):
         form = OfferForm(request.POST)
         if form.is_valid():
             offer = form.save(commit=False)
+            company = request.user
+            offer.company = company.company
             offer.save()
             id = offer.id
             prompt(id)
@@ -26,7 +28,8 @@ def createOffer(request):
 
 
 def drafts(request):
-    offers = Offer.objects.filter()
+    company = request.user
+    offers = Offer.objects.filter(company = company.company)
 
     return render(request, 'drafts.html', {'offers': offers})
 
@@ -55,14 +58,22 @@ def prompt(offer_id):
     else:
         xyzk, highlight_words, corrected_description = "", "", result
 
+    flag = False
     if int(xyzk[1]) > 0:
         offer.bias.add(Bias.objects.get(pk=1))
+        flag = True
     if int(xyzk[3]) > 0:
         offer.bias.add(Bias.objects.get(pk=2))
+        flag = True
     if int(xyzk[5]) > 0:
         offer.bias.add(Bias.objects.get(pk=3))
+        flag = True
     if int(xyzk[7]) > 0:
         offer.bias.add(Bias.objects.get(pk=4))
+        flag = True
+
+    if flag == False:
+        offer.bias.add(Bias.objects.get(pk=5))
     
     suggestion = Suggestion(
         corrected_description=corrected_description,
@@ -90,6 +101,3 @@ def replaceOffer(request, id):
     offer.save()
 
     return redirect('drafts')
-
-
-

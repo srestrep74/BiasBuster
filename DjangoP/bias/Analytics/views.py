@@ -6,6 +6,7 @@ from .models import *
 from django.contrib.auth.models import User, auth
 from Offer.models import *
 from django.db.models import Count , F
+from django.contrib.auth import login, logout, authenticate
 
 
 def login(request):
@@ -22,12 +23,19 @@ def login(request):
         
     return render(request, 'login.html')
 
+
+def logoutAccount(request):
+    logout(request)
+    return redirect('login')
+
+
 def graph_contains_bias(company_id):
     company =  Company.objects.get(id=company_id)
     offers_total = Offer.objects.filter(company=company).count()
     offers_bias = Offer.filter(company=company, bias__isnull=False).distinct().count()
 
-    return  offers_total, offers_total
+    return offers_total, offers_total
+
 
 def graph_by_bias(company_id):
     company  = Company.objects.get(id=company_id)
@@ -38,9 +46,9 @@ def graph_by_bias(company_id):
 
     return bias_percentage
 
-def prueba(request, company_id):
-    offers_total , offers_bias = graph_contains_bias(company_id)
 
+def prueba(request, company_id):
+    offers_total, offers_bias = graph_contains_bias(company_id)
     bias_percentage = graph_by_bias(company_id)
 
     context= {
@@ -49,7 +57,4 @@ def prueba(request, company_id):
         'bias_percentage' : bias_percentage
     }
 
-
-
     return render(request, 'analisis.html', context)
-
