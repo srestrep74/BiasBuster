@@ -5,7 +5,8 @@ def analyze(request):
     return render(request, 'analyze.html')
 
 def informs_diagrams(request):
-    return render(request, 'informs_diagrams.html')
+    company = request.user.company.id 
+    return render(request, 'informs_diagrams.html' , {'company_id' : company})
 
 
 def ubication(request):
