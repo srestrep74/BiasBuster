@@ -80,7 +80,6 @@ def graph_by_bias(company_id, date_filter):
 
 def format_bias(company_id, date_filter):
     bias_percentage = graph_by_bias(company_id, date_filter)
-    print(bias_percentage)
     res = {
         "Sexismo" : 0,
         "Racismo" : 0 ,
@@ -97,9 +96,24 @@ def format_bias(company_id, date_filter):
 
 
 def prueba(request, id, date_filter):
-
+    year_bias_general, year_bias_specific,sexismo,racismo, ubicacion, ideologias, edad, xenofobia, ninguno = bias_by_time(id)
     offers_total, offers_bias = graph_contains_bias(id, date_filter)
     bias_percentage = format_bias(id, date_filter)
+
+    print(type(sexismo), sexismo)
+
+    bias_last = bias_last_year(id)
+
+
+    types = {
+        'sexismo' : sexismo,
+        'racismo' : racismo,
+        'ubicacion' : ubicacion,
+        'ideologias' : ideologias,
+        'edad' : edad,
+        'xenofobia' : xenofobia,
+        'ninguno' : ninguno
+    }
 
     f = 0
     total_bias = 0
@@ -112,6 +126,7 @@ def prueba(request, id, date_filter):
     
     act, last = bar_comparative_format(id)
 
+    print(year_bias_specific[1])
 
     context= {
         'offers_total' : offers_total,
@@ -120,9 +135,27 @@ def prueba(request, id, date_filter):
         'total_bias' : total_bias,
         'act' : act,
         'last' : last,
+
+        #Miguel
+        'spe_jan' : year_bias_specific[0],
+        'spe_feb' : year_bias_specific[1],
+        'spe_marc' : year_bias_specific[2],
+        'spe_apr' : year_bias_specific[3],
+        'spe_may' : year_bias_specific[4],
+        'spe_jun' : year_bias_specific[5],
+        'spe_jul' : year_bias_specific[6],
+        'spe_aug' : year_bias_specific[7],
+        'spe_sep' : year_bias_specific[8],
+        'spe_oct' : year_bias_specific[9],
+        'spe_nov' : year_bias_specific[10],
+        'spe_dec' : year_bias_specific[11],
+        'types' : types,
+        'last_year' : bias_last,
+        'time_general' : year_bias_general,
+        
     }
 
-    print(bias_percentage)
+    
 
     return render(request, 'analisis.html', context)
 
@@ -170,7 +203,70 @@ def bar_comparative_format(company_id):
         resla[bias['type']] = bias['quantity_bias'] 
     return resact, resla
 
+def bias_by_time(company_id):
+    bias_by_month_specific = [0]*12
+    sexismo = [0]*12
+    racismo = [0]*12
+    ubicacion = [0]*12
+    ideologias = [0]*12
+    edad = [0]*12
+    xenofobia = [0]*12
+    ninguno = [0]*12 
+    i = 0
+    while i < 12:
+        res = {
+            "Sexismo" : 0,
+            "Racismo" : 0 ,
+            "Ubicacion" : 0,
+            "Ideologias" : 0,
+            "Edad" : 0,
+            "Xenofobia" : 0,
+            "Ninguno" : 0,
+        }
+        bias_by_month_specific[i] = res
+        i+=1
 
+
+    bias_by_month_general = [0]*12
+    company = Company.objects.get(id=company_id) 
+    today = datetime.now().date()
+    year=today.year
+    start_time = datetime(year=year, month=1, day = 1)
+    end_time = datetime(year=year, month=12, day=31)
+    offers_queryset = Offer.objects.filter(company=company, date__gte = start_time, date__lt=end_time)
+    for offer in offers_queryset:
+        bias_by_month_general[offer.date.month-1] += 1
+        bias_offer = [bias.type for bias in offer.bias.all()]
+        for type_bias in bias_offer:
+            bias_by_month_specific[offer.date.month-1][type_bias]+=1
+            if type_bias == "Sexismo":
+                sexismo[offer.date.month-1] += 1
+            elif type_bias == "Racismo":
+                racismo[offer.date.month-1] += 1
+            elif type_bias == "Ubicacion":
+                ubicacion[offer.date.month-1] += 1
+            elif type_bias == "Ideologias":
+                ideologias[offer.date.month-1] += 1
+            elif type_bias == "Edad":
+                edad[offer.date.month-1] += 1
+            elif type_bias == "Xenofobia":
+                xenofobia[offer.date.month-1] += 1
+            elif type_bias == "Ninguno":
+                ninguno[offer.date.month-1] += 1
+    
+    return bias_by_month_general, bias_by_month_specific, sexismo, racismo, ubicacion, ideologias, edad, xenofobia, ninguno
+
+def bias_last_year(company_id):
+    bias_by_year = [0]*12
+    company = Company.objects.get(id=company_id) 
+    today = datetime.now().date()
+    year=today.year
+    start_time = datetime(year=year-1, month=1, day = 1)
+    end_time = datetime(year=year-1, month=12, day=31)
+    offers_queryset = Offer.objects.filter(company=company, date__gte = start_time, date__lt=end_time)
+    for offer in offers_queryset:
+        bias_by_year[offer.date.month-1] += 1
+    return bias_by_year
 
 
 
