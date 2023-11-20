@@ -68,9 +68,6 @@ def prompt(offer_id):
     if int(xyzk[5]) > 0:
         offer.bias.add(Bias.objects.get(pk=3))
         flag = True
-    if int(xyzk[7]) > 0:
-        offer.bias.add(Bias.objects.get(pk=4))
-        flag = True
 
     if flag == False:
         offer.bias.add(Bias.objects.get(pk=5))
