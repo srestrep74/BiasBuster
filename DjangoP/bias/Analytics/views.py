@@ -14,7 +14,7 @@ def login(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
-        user = authenticate(username=username , password=password)
+        user = authenticate(username=username, password=password)
         if user is not None:
             auth.login(request, user)
             return redirect('drafts')
@@ -22,7 +22,7 @@ def login(request):
             messages.info(request, 'Usuario o contraseña son incorrectos')
             return redirect('login')
         
-    return render(request, 'login.html')
+    return render(request, 'auth/login.html')
 
 
 def logoutAccount(request):
@@ -30,13 +30,9 @@ def logoutAccount(request):
     return redirect('login')
 
 
-
-
 def graph_contains_bias(company_id, date_filter):
     company =  Company.objects.get(id=company_id)
-
     today = datetime.now().date()
-
     offers_total = None
 
     if date_filter == 'today':
@@ -47,7 +43,7 @@ def graph_contains_bias(company_id, date_filter):
     elif date_filter == 'last_7_days':
         seven_days_ago = today-timedelta(days=7)
         offers_total = Offer.objects.filter(company=company,date__gte=seven_days_ago).count()
-    else : 
+    else: 
         month = today-timedelta(days=30)
         offers_total = Offer.objects.filter(company=company,date__gte=month).count()
 
@@ -58,7 +54,6 @@ def graph_contains_bias(company_id, date_filter):
 
 def graph_by_bias(company_id, date_filter):
     company  = Company.objects.get(id=company_id)
-
     today = datetime.now().date()
     offers_queryset = None
     if date_filter == 'today':
@@ -69,95 +64,89 @@ def graph_by_bias(company_id, date_filter):
         offers_queryset = Offer.objects.filter(company=company, date__gte=today-timedelta(days=7))
     elif date_filter == 'month':
         offers_queryset = Offer.objects.filter(company=company, date__gte=today-timedelta(days=30))
+    
     offerts_total = offers_queryset.count()
-
     bias_percentage = Bias.objects.filter(offer__in=offers_queryset).annotate(
-        quantity_bias=Count('offer__bias'),
-        percentage=F('quantity_bias') * 100 / Value(offerts_total, output_field=models.FloatField())
+        quantity_bias = Count('offer__bias'),
+        percentage = F('quantity_bias') * 100 / Value(offerts_total, output_field=models.FloatField())
     ).values('type', 'quantity_bias', 'percentage')
 
     return bias_percentage
 
+
 def format_bias(company_id, date_filter):
     bias_percentage = graph_by_bias(company_id, date_filter)
     res = {
-        "Sexismo" : 0,
-        "Racismo" : 0 ,
-        "Ubicacion" : 0,
-        "Ideologias" : 0,
-        "Edad" : 0,
-        "Xenofobia" : 0,
-        "Ninguno" : 0,
+        "Sexismo": 0,
+        "Racismo": 0 ,
+        "Ubicacion": 0,
+        "Ideologias": 0,
+        "Edad": 0,
+        "Xenofobia": 0,
+        "Ninguno": 0,
     }
     for bias in bias_percentage:
         res[bias['type']] = bias['quantity_bias'] 
+
     return res
 
 
-
 def prueba(request, id, date_filter):
-    year_bias_general, year_bias_specific,sexismo,racismo, ubicacion, ideologias, edad, xenofobia, ninguno = bias_by_time(id)
+    year_bias_general, year_bias_specific, sexismo, racismo, ubicacion, ideologias, edad, xenofobia, ninguno = bias_by_time(id)
     offers_total, offers_bias = graph_contains_bias(id, date_filter)
     bias_percentage = format_bias(id, date_filter)
-
     print(type(sexismo), sexismo)
-
     bias_last = bias_last_year(id)
 
-
     types = {
-        'sexismo' : sexismo,
-        'racismo' : racismo,
-        'ubicacion' : ubicacion,
-        'ideologias' : ideologias,
-        'edad' : edad,
-        'xenofobia' : xenofobia,
-        'ninguno' : ninguno
+        'sexismo': sexismo,
+        'racismo': racismo,
+        'ubicacion': ubicacion,
+        'ideologias': ideologias,
+        'edad': edad,
+        'xenofobia': xenofobia,
+        'ninguno': ninguno
     }
 
     f = 0
     total_bias = 0
     for b,q in bias_percentage.items():
-        if  q > 0 :
+        if  q > 0:
             f = 1
         total_bias += q
+
     if f == 0:
         bias_percentage['Ninguno'] = 100
     
     act, last = bar_comparative_format(id)
-
     print(year_bias_specific[1])
 
     context= {
-        'offers_total' : offers_total,
-        'offers_bias' : offers_bias,
-        'bias_percentage' : bias_percentage,
-        'total_bias' : total_bias,
-        'act' : act,
-        'last' : last,
-
-        #Miguel
-        'spe_jan' : year_bias_specific[0],
-        'spe_feb' : year_bias_specific[1],
-        'spe_marc' : year_bias_specific[2],
-        'spe_apr' : year_bias_specific[3],
-        'spe_may' : year_bias_specific[4],
-        'spe_jun' : year_bias_specific[5],
-        'spe_jul' : year_bias_specific[6],
-        'spe_aug' : year_bias_specific[7],
-        'spe_sep' : year_bias_specific[8],
-        'spe_oct' : year_bias_specific[9],
-        'spe_nov' : year_bias_specific[10],
-        'spe_dec' : year_bias_specific[11],
-        'types' : types,
-        'last_year' : bias_last,
-        'time_general' : year_bias_general,
-        
+        'offers_total': offers_total,
+        'offers_bias': offers_bias,
+        'bias_percentage': bias_percentage,
+        'total_bias': total_bias,
+        'act': act,
+        'last': last,
+        'spe_jan': year_bias_specific[0],
+        'spe_feb': year_bias_specific[1],
+        'spe_marc': year_bias_specific[2],
+        'spe_apr': year_bias_specific[3],
+        'spe_may': year_bias_specific[4],
+        'spe_jun': year_bias_specific[5],
+        'spe_jul': year_bias_specific[6],
+        'spe_aug': year_bias_specific[7],
+        'spe_sep': year_bias_specific[8],
+        'spe_oct': year_bias_specific[9],
+        'spe_nov': year_bias_specific[10],
+        'spe_dec': year_bias_specific[11],
+        'types': types,
+        'last_year': bias_last,
+        'time_general': year_bias_general,
     }
 
-    
+    return render(request, 'graphics/analysis.html', context)
 
-    return render(request, 'analisis.html', context)
 
 def bar_comparative(company_id):
     company  = Company.objects.get(id=company_id)
@@ -165,43 +154,48 @@ def bar_comparative(company_id):
     offers_queryset = Offer.objects.filter(company=company, date__gte=today-timedelta(days=30))
     offerts_total = offers_queryset.count()
     actual = Bias.objects.filter(offer__in=offers_queryset).annotate(
-        quantity_bias=Count('offer__bias'),
-        percentage=F('quantity_bias') * 100 / Value(offerts_total, output_field=models.FloatField())
+        quantity_bias = Count('offer__bias'),
+        percentage = F('quantity_bias') * 100 / Value(offerts_total, output_field=models.FloatField())
     ).values('type', 'quantity_bias', 'percentage')
 
     offers_queryset = Offer.objects.filter(company=company, date__lte=today-timedelta(days=60))
 
     offerts_total = offers_queryset.count()
     last = Bias.objects.filter(offer__in=offers_queryset).annotate(
-        quantity_bias=Count('offer__bias'),
-        percentage=F('quantity_bias') * 100 / Value(offerts_total, output_field=models.FloatField())
+        quantity_bias = Count('offer__bias'),
+        percentage = F('quantity_bias') * 100 / Value(offerts_total, output_field=models.FloatField())
     ).values('type', 'quantity_bias', 'percentage')
 
     return actual, last
 
+
 def bar_comparative_format(company_id):
-    actual ,  last = bar_comparative(company_id)
+    actual, last = bar_comparative(company_id)
     resact = {
-        "Sexismo" : 0,
-        "Racismo" : 0 ,
-        "Ubicacion" :0,
-        "Ideologias" : 0,
-        "Edad" : 0,
-        "Xenofobia" :0,
+        "Sexismo": 0,
+        "Racismo": 0 ,
+        "Ubicacion":0,
+        "Ideologias": 0,
+        "Edad": 0,
+        "Xenofobia":0,
     }
     resla = {
-        "Sexismo" : 0,
-        "Racismo" : 0 ,
-        "Ubicacion" :0,
-        "Ideologias" : 0,
-        "Edad" : 0,
-        "Xenofobia" :0,
+        "Sexismo": 0,
+        "Racismo": 0 ,
+        "Ubicacion":0,
+        "Ideologias": 0,
+        "Edad": 0,
+        "Xenofobia":0,
     }
+
     for bias in actual:
         resact[bias['type']] = bias['quantity_bias'] 
+
     for bias in last:
         resla[bias['type']] = bias['quantity_bias'] 
+
     return resact, resla
+
 
 def bias_by_time(company_id):
     bias_by_month_specific = [0]*12
@@ -215,17 +209,16 @@ def bias_by_time(company_id):
     i = 0
     while i < 12:
         res = {
-            "Sexismo" : 0,
-            "Racismo" : 0 ,
-            "Ubicacion" : 0,
-            "Ideologias" : 0,
-            "Edad" : 0,
-            "Xenofobia" : 0,
-            "Ninguno" : 0,
+            "Sexismo": 0,
+            "Racismo": 0 ,
+            "Ubicacion": 0,
+            "Ideologias": 0,
+            "Edad": 0,
+            "Xenofobia": 0,
+            "Ninguno": 0,
         }
         bias_by_month_specific[i] = res
         i+=1
-
 
     bias_by_month_general = [0]*12
     company = Company.objects.get(id=company_id) 
@@ -256,17 +249,16 @@ def bias_by_time(company_id):
     
     return bias_by_month_general, bias_by_month_specific, sexismo, racismo, ubicacion, ideologias, edad, xenofobia, ninguno
 
+
 def bias_last_year(company_id):
     bias_by_year = [0]*12
     company = Company.objects.get(id=company_id) 
     today = datetime.now().date()
-    year=today.year
+    year = today.year
     start_time = datetime(year=year-1, month=1, day = 1)
     end_time = datetime(year=year-1, month=12, day=31)
-    offers_queryset = Offer.objects.filter(company=company, date__gte = start_time, date__lt=end_time)
+    offers_queryset = Offer.objects.filter(company=company, date__gte=start_time, date__lt=end_time)
     for offer in offers_queryset:
         bias_by_year[offer.date.month-1] += 1
+
     return bias_by_year
-
-
-

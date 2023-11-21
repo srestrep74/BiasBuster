@@ -4,6 +4,7 @@ from .forms import *
 import openai
 import environ
 
+
 env = environ.Env()
 environ.Env.read_env('../bias/')
 openai.api_key = env('API')
@@ -24,7 +25,7 @@ def createOffer(request):
     else:
         form = OfferForm()
 
-    return render(request, 'create_offer.html', {'form': form})
+    return render(request, 'offer/create_offer.html', {'form': form})
 
 
 def drafts(request):
@@ -35,7 +36,7 @@ def drafts(request):
     else:
         offers = Offer.objects.filter(company = company.company)
 
-    return render(request, 'drafts.html', {'offers': offers})
+    return render(request, 'offer/drafts.html', {'offers': offers})
 
 
 def prompt(offer_id):
@@ -74,7 +75,7 @@ def prompt(offer_id):
         flag = True
 
     if flag == False:
-        offer.bias.add(Bias.objects.get(pk=5))
+        offer.bias.add(Bias.objects.get(pk=7))
     
     suggestion = Suggestion(
         corrected_description=corrected_description,
@@ -97,7 +98,7 @@ def bias(request, id):
         
     }
 
-    return render(request, 'bias.html', context)
+    return render(request, 'offer/bias.html', context)
 
 
 def replaceOffer(request, id):
@@ -107,3 +108,12 @@ def replaceOffer(request, id):
     offer.save()
 
     return redirect('drafts')
+
+
+def analyze(request):
+    return render(request, 'graphics/analyze.html')
+
+
+def informs_diagrams(request):
+    company = request.user.company.id 
+    return render(request, 'graphics/informs_diagrams.html' , {'company_id': company})
