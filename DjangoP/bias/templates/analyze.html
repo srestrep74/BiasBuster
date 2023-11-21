@@ -8,8 +8,12 @@
             <figcaption class="absolute px-4 text-lg text-white bottom-6 flex flex-col items-center w-full">
                 <h1>BIAS BUSTER</h1><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
                 <p class="text-center">¿Tienes alguna oferta que quieras análizar?</p>
-                <p class="text-center">Clickea a continuación</p>
-                <a href="#" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Probar</a>
+                {% if request.user.is_authenticated %}
+                    <p class="text-center">Clickea a continuación</p>
+                    <a href="#" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Probar</a>
+                {% else %}
+                    <a href="{% url 'login' %}" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Iniciar sesión</a>
+                {% endif %}
             </figcaption>
         </figure>
         
@@ -19,8 +23,12 @@
             <figcaption class="absolute px-4 text-lg text-white bottom-6 flex flex-col items-center w-full">
                 <h1>ANÁLISIS</h1><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
                 <p class="text-center">¡Conoce tu histórico!</p>
-                <p class="text-center">Clickea a continuación</p>
-                <a href="{% url 'informs_diagrams' %}" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Ir a ver</a>
+                {% if request.user.is_authenticated %}
+                    <p class="text-center">Clickea a continuación</p>
+                    <a href="{% url 'informs_diagrams' %}" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Ir a ver</a>
+                {% else %}
+                    <a href="{% url 'login' %}" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Iniciar sesión</a>
+                {% endif %}
             </figcaption>
         </figure>
     </div>    

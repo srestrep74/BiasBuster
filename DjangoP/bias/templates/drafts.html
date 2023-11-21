@@ -1,19 +1,19 @@
 {% include 'navbar.html' %}
 {% block content %}
-
-    <!-- Search Bar -->
-    <div class="max-w-xs ml-4 mb-4 border border-gray-200 rounded-lg shadow-md">
-        <div class="relative w-full">
-            <input type="text" class="w-full h-8 pl-3 pr-8 text-xs border rounded-lg outline-none dark:bg-gray-800" placeholder="Ingresa el nombre de tu vacante a analizar">
-            <button class="absolute w-6 h-6 text-gray-400 transition-colors duration-150 cursor-pointer right-1 top-1 rounded-lg hover:text-gray-300 dark:hover:text-gray-500 focus:outline-none">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 11a4 4 0 11-8 0 4 4 0 018 0z"/>
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-4.35-4.35"/>
-                </svg>
-            </button>
+    <form action="{% url 'drafts' %}" method="get">
+        <div class="max-w-xs ml-4 mb-4 border border-gray-200 rounded-lg shadow-md">
+            <div class="relative w-full">
+                <input type="text" name="searchOffer" id="searchOffer" class="w-full h-8 pl-3 pr-8 text-xs border rounded-lg outline-none dark:bg-gray-800" placeholder="Ingresa el nombre de tu vacante a analizar">
+                <button class="absolute w-6 h-6 text-gray-400 transition-colors duration-150 cursor-pointer right-1 top-1 rounded-lg hover:text-gray-300 dark:hover:text-gray-500 focus:outline-none">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 11a4 4 0 11-8 0 4 4 0 018 0z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-4.35-4.35"/>
+                    </svg>
+                </button>
+            </div>
         </div>
-    </div>
-    
+    </form>
+
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {% for offer in offers %}
             <div class="max-w-sm mx-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700">

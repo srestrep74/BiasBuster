@@ -12,29 +12,30 @@
         <nav class="flex justify-between" aria-label="Breadcrumb">
             <ol class="inline-flex items-center mb-3 sm:mb-0">
                 <div class="flex items-center">
-                    <button id="dropdownDatabase" data-dropdown-toggle="dropdown-database" class="inline-flex items-center px-3 py-2 text-sm font-normal text-center text-white bg-blue-900 rounded-lg hover:bg-blue-900 focus:ring-4 focus:outline-none focus:ring-blue-100 dark:bg-gray-900 dark:hover:bg-gray-800 dark:text-white dark:focus:ring-gray-700">
-            </svg>Admin<svg class="w-2.5 h-2.5 ml-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
-            </svg></button>
-                <div id="dropdown-database" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
-                    <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefault">
-                        <li>
-                            <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Perfil</a>
-                        </li>
-                        <li>
-                            <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Configuración</a>
-                        </li>
-                        {% if request.user.is_authenticated %}
-                            <li>
-                                <a href="{% url 'logout' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Salir</a>
-                            </li>
-                        {% else %}
-                            <li>
-                                <a href="{% url 'login' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Iniciar</a>
-                            </li>
-                        {% endif %}
-                    </ul>
-                </div>
+                    {% if request.user.is_authenticated %}
+                        <button id="dropdownDatabase" data-dropdown-toggle="dropdown-database" class="inline-flex items-center px-3 py-2 text-sm font-normal text-center text-white bg-blue-900 rounded-lg hover:bg-blue-900 focus:ring-4 focus:outline-none focus:ring-blue-100 dark:bg-gray-900 dark:hover:bg-gray-800 dark:text-white dark:focus:ring-gray-700">
+                            </svg>{{user.company.name}}<svg class="w-2.5 h-2.5 ml-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+                            </svg>
+                        </button>
+                        <div id="dropdown-database" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
+                            <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefault">
+                                <li>
+                                    <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Perfil</a>
+                                </li>
+                                <li>
+                                    <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Configuración</a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'logout' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Salir</a>
+                                </li>
+                            </ul>
+                        </div>
+                    {% else %}
+                    <a href="{% url 'login' %}" class="flex items-center">
+                        <span class="text-sm hover:underline; font-size: 16px;">Iniciar sesión</span>
+                    </a>
+                    {% endif %}
                 </div>
             </li>
             </ol>
@@ -42,36 +43,35 @@
         </div>
     </nav>
     
-    <!-- Navbar 2 - White one-->
-    <nav class="bg-gray-50 dark:bg-gray-700">
-        <div class="max-w-screen-xl px-4 py-3 mx-auto">
-            <div class="flex items-center">
-                <ul class="flex flex-row font-medium mt-0 mr-6 space-x-8 text-sm">
-                    {% if request.user.is_authenticated %}
+    {% if request.user.is_authenticated %}
+        <nav class="bg-gray-50 dark:bg-gray-700">
+            <div class="max-w-screen-xl px-4 py-3 mx-auto">
+                <div class="flex items-center">
+                    <ul class="flex flex-row font-medium mt-0 mr-6 space-x-8 text-sm">
                         <li>
                             <a href="{% url 'drafts' %}" class="text-gray-900 dark:text-white hover:underline" aria-current="page">Borrador</a>
                         </li>
-                    {% endif %}
-                    <li>
-                        <a href="#" class="text-gray-900 dark:text-white hover:underline">Publicadas</a>
-                    </li>
-                    <li>
-                        <a href="#" class="text-gray-900 dark:text-white hover:underline">Expiradas</a>
-                    </li>
-                    <li>
-                        <a href="#" class="text-gray-900 dark:text-white hover:underline">Inactivas</a>
-                    </li>
-                    <li>
-                        <a href="#" class="text-gray-900 dark:text-white hover:underline">Canceladas</a>
-                    </li>
-                    <li>
-                        <a href="#" class="text-gray-900 dark:text-white hover:underline">Cubiertas</a>
-                    </li>
-                    <li>
-                        <a href="{% url 'analyze' %}" class="text-gray-900 dark:text-white hover:underline">Análisis</a>
-                    </li>
-                </ul>
+                        <li>
+                            <a href="#" class="text-gray-900 dark:text-white hover:underline">Publicadas</a>
+                        </li>
+                        <li>
+                            <a href="#" class="text-gray-900 dark:text-white hover:underline">Expiradas</a>
+                        </li>
+                        <li>
+                            <a href="#" class="text-gray-900 dark:text-white hover:underline">Inactivas</a>
+                        </li>
+                        <li>
+                            <a href="#" class="text-gray-900 dark:text-white hover:underline">Canceladas</a>
+                        </li>
+                        <li>
+                            <a href="#" class="text-gray-900 dark:text-white hover:underline">Cubiertas</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'analyze' %}" class="text-gray-900 dark:text-white hover:underline">Análisis</a>
+                        </li>
+                    </ul>
+                </div>
             </div>
-        </div>
-    </nav>
+        </nav>
+    {% endif %}
 {% endblock content %}

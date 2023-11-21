@@ -28,8 +28,12 @@ def createOffer(request):
 
 
 def drafts(request):
+    search_term = request.GET.get('searchOffer')
     company = request.user
-    offers = Offer.objects.filter(company = company.company)
+    if search_term:
+        offers = Offer.objects.filter(company = company.company, title__icontains=search_term)
+    else:
+        offers = Offer.objects.filter(company = company.company)
 
     return render(request, 'drafts.html', {'offers': offers})
 
