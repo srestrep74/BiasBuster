@@ -1,94 +1,264 @@
 {% include 'navbar.html' %}
 {% block content %}
-
+<style>
+    #wrapper {
+        margin: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      p {
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+      
+      #info {
+        opacity: 0.2;
+        margin: 0;
+        text-align: center;
+      }
+      
+      /* VARIABLES (Have fun) */
+      #termometer {
+        width: 25px;
+        background: #3d3d44;
+        height: 240px;
+        position: relative;
+        border: 9px solid darken(#3d3d44, 8%);
+        border-radius: 20px;
+        z-index: 1;
+        margin-bottom: 50px;
+      }
+      
+      #termometer:before, #termometer:after {
+        position: absolute;
+        content: "";
+        border-radius: 50%;
+      }
+      
+      /* Border cover */
+      #termometer:before {
+        width: 100%;
+        height: 130px;
+        bottom: 9px;
+        background: #3d3d44;
+        z-index: -1;
+      }
+      
+      /* Bulb */
+      #termometer:after {
+        transform: translateX(-50%);
+        width: 50px;
+        height: 50px;
+        background-color: #3dcadf;
+        bottom: -41px;
+        border: 9px solid darken(#3d3d44, 8%);
+        z-index: -3;
+        left: 50%;
+      }
+      
+      #graduations {
+        height: 141px;
+        top: 20%;
+        width: 50%;
+      }
+      
+      #graduations, #graduations:before {
+        position: absolute;
+        border-top: 2px solid rgba(0, 0, 0, 0.5);
+        border-bottom: 2px solid rgba(0, 0, 0, 0.5);
+      }
+      
+      #graduations:before {
+        content: "";
+        height: 80px;
+        width: 100%;
+        top: 64px;
+      }
+      
+      #temperature {
+        bottom: 0;
+        background: linear-gradient(#f17a65, #3dcadf) no-repeat bottom;
+        width: 100%;
+        border-radius: 20px;
+        background-size: 100% 240px;
+        transition: all 0.2s ease-in-out;
+      }
+      
+      #temperature, #temperature:before, #temperature:after {
+        position: absolute;
+      }
+      
+      /* Temperature value - Tooltip */
+      #temperature:before {
+        content: attr(data-value);
+        background: rgba(0, 0, 0, 0.7);
+        color: white;
+        z-index: 2;
+        padding: 5px 10px;
+        border-radius: 5px;
+        font-size: 1em;
+        line-height: 1;
+        transform: translateY(50%);
+        left: calc(-100% + 1em / 1.5);
+        top: calc(-1em + 5px - 10px);
+      }
+      
+      /* Tooltip arrow */
+      #temperature:after {
+        content: "";
+        border-top: 1em / 2.2 solid transparent;
+        border-bottom: 1em / 2.2 solid transparent;
+        border-right: 1em / 1.5 solid rgba(0, 0, 0, 0.7);
+        left: -1em;
+        top: calc(-1em / 2.2 + 5px);
+      }
+      
+      
+      
+    </style>
+    <br>
+    <br>
     <div class="flex justify-center">
-        
-        <!--Offer-->
-        <div class="w-1/3 p-4">
-            <div class="bg-white border border-gray-200 rounded-lg shadow-md p-4">
-                <div class="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+      <h6 class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white">Analisis de la oferta : {{offer.title}}</h6>
+      
+      </div>
+      <br>
+    <div class="flex justify-center ">
+        <!-- Sección izquierda -->
+         <!-- Utilizamos items-stretch para que ambos elementos se expandan verticalmente -->
+            <!-- Termómetro -->
+            <div class="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 flex-grow m-4">
+                <div id="wrapper">
+                    <div id="termometer">
+                        <div id="temperature" style="height: 0" data-value="0°C"></div>
+                        <div id="graduations"></div>
+                    </div>
+    
+                    
+                </div>
+            </div>
+    
+            <!-- Descripción -->
+            <div class="bg-white border border-gray-200 rounded-lg shadow-md p-4 flex-grow m-4 flex  items-center">
+                <div class="max-w-sm p-6 bg-white   flex flex-col items-center justify-center">
                     <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{offer.title}}</h5>
-                    <h1>Descripción de la vacante:</h1><br>
+                    <br>
+                    <h1>Descripción de la vacante:</h1>
+                    <br>
                     <p id="description" class="mb-3 font-normal text-gray-700 dark:text-gray-400">
                         {{offer.description}}    
                     </p>
                 </div>
             </div>
-        </div>
 
-        <!--Sentences - BIAS -->
-        <div class="w-1/3 p-4">
-            <div class="bg-white border border-gray-200 rounded-lg shadow-md p-4">
-                <div class="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-                    <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Oraciones con sesgo</h5>
-                        {{suggestion.highlight_words}}
-                </div>
-            </div>
-        </div>
-        
-
-        <!--Highlight-->
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                var description = document.getElementById('description');
-                var biasSentences = "{{suggestion.highlight_words}}".split('//');
-                for (var i = 0; i < biasSentences.length; i++) {
-                    var sentence = biasSentences[i].trim();
-                    if (sentence !== "") {
-                        var regex = new RegExp(sentence, 'g');
-                        description.innerHTML = description.innerHTML.replace(regex, '<span style="background-color: #D24D55; color: white; border-radius: 8px; padding: 2px;">' + sentence + '</span>');
-                    }
-                }
-            });
-        </script>
-            
-        <!--Stadistics-->
-        <div class="w-1/3 p-4">
-            <div class="bg-white border border-gray-200 rounded-lg shadow-md p-4">  
-                <div class="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-                    <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Estadísticas</h5>    
+            <div class="bg-white border border-gray-200 rounded-lg shadow-md p-4 flex-grow m-4 flex  items-center">
+                <div class="max-w-sm p-6 bg-white   flex flex-col items-center justify-center">
                     
-                    <!--Graphics-->
-                    {% for bias in offer.bias.all %}
-                        <div class="mb-1 text-base font-medium text-gray-700 dark:text-gray-400">{{ bias }}</div>
-                        <div class="w-full bg-gray-200 rounded-full h-2.5 mb-4 dark:bg-gray-700">
-
-                            {% if bias|lower == 'racismo' %}
-                                <div class="bg-red-600 h-2.5 rounded-full dark:bg-gray-300" style="width: 100%"></div>
-                            {% elif bias|lower == 'sexismo' %}
-                                <div class="bg-blue-600 h-2.5 rounded-full" style="width: 100%"></div>
-                            {% elif bias|lower == 'xenofobia' %}
-                                <div class="bg-green-600 h-2.5 rounded-full dark:bg-green-500" style="width: 100%"></div>
-                            {% elif bias|lower == 'homofobia' %}
-                                <div class="bg-yellow-400 h-2.5 rounded-full" style="width: 100%"></div>
-                            {% else %}
-                                <div style="width: 0%"></div>
-                            {% endif %}
-                        </div>
-                    {% endfor %}
+                        <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Oraciones con sesgo</h5>
+                        <br>
+                            {{suggestion.highlight_words}}
+                    
                 </div>
             </div>
-        </div>
+       
+    <!--Stadistics-->
+    <div class="bg-white border border-gray-200 rounded-lg shadow-md p-4 flex-grow m-4 flex  items-center">
+        <div class="max-w-sm p-6 bg-white   flex flex-col items-center justify-center">  
+            
+                <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Estadísticas</h5>    
+                    <br>
+                <!--Graphics-->
+                {% for bias in offer.bias.all %}
+                    <div class="mb-1 text-base font-medium text-gray-700 dark:text-gray-400">{{ bias }}</div>
+                    <div class="w-full bg-gray-200 rounded-full h-2.5 mb-4 dark:bg-gray-700">
 
-        <!--Suggestions-->
-        <div class="w-1/3 p-4">
-            <div class="bg-white border border-gray-200 rounded-lg shadow-md p-4">
-                <div class="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-                    <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Sugerencias</h5>
-                    <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
-                        {{offer.title}}<br><br>
-                        {{suggestion.corrected_description}}
-                    </p>
-                    <a href="{% url 'replace' offer.id %}" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                        Aplicar sugerencias
-                        <svg class="w-3.5 h-3.5 ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
-                        </svg>
-                    </a>
-                </div>
-            </div>
+                        {% if bias|lower == 'racismo' %}
+                            <div class="bg-red-600 h-2.5 rounded-full dark:bg-gray-300" style="width: 100%"></div>
+                        {% elif bias|lower == 'sexismo' %}
+                            <div class="bg-blue-600 h-2.5 rounded-full" style="width: 100%"></div>
+                        {% elif bias|lower == 'xenofobia' %}
+                            <div class="bg-green-600 h-2.5 rounded-full dark:bg-green-500" style="width: 100%"></div>
+                        {% elif bias|lower == 'homofobia' %}
+                            <div class="bg-yellow-400 h-2.5 rounded-full" style="width: 100%"></div>
+                        {% else %}
+                            <div style="width: 0%"></div>
+                        {% endif %}
+                    </div>
+                    <br>
+                {% endfor %}
+            
         </div>
     </div>
+
+    <div class="bg-white border border-gray-200 rounded-lg shadow-md p-4 flex-grow m-4 flex  items-center">
+        <div class="max-w-sm p-6 bg-white   flex flex-col items-center justify-center">
+           
+                <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Sugerencias</h5>
+                <br>
+                <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
+                    {{offer.title}}<br><br>
+                    {{suggestion.corrected_description}}
+                </p>
+                <br>
+                <a href="{% url 'replace' offer.id %}" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                    Aplicar sugerencias
+                    <svg class="w-3.5 h-3.5 ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+                    </svg>
+                </a>
+            
+        </div>
+    </div>
+        
+</div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var description = document.getElementById('description');
+            var biasSentences = "{{suggestion.highlight_words}}".split('//');
+            for (var i = 0; i < biasSentences.length; i++) {
+                var sentence = biasSentences[i].trim();
+                if (sentence !== "") {
+                    var regex = new RegExp(sentence, 'g');
+                    description.innerHTML = description.innerHTML.replace(regex, '<span style="background-color: #D24D55; color: white; border-radius: 8px; padding: 2px;">' + sentence + '</span>');
+                }
+            }
+        });
+    </script>
+
+<script>
+    const units = {
+        Celcius: "°C",
+      };
+      
+      const config = {
+        minTemp: 0, // Mínimo será 0%
+        maxTemp: 100, // Máximo será 100%
+        unit: "Percentage" // Cambié a porcentaje
+      };
+      
+      // Cambia estas variables según tu proyecto
+      let frasesConSesgo = {{q_suggest}}; // Número de frases con sesgo
+      let totalFrases = {{q_suggest}}; // Número total de frases
+      
+      // Cambio en el rango
+      
+      
+      function setTemperature() {
+        const porcentajeSesgo = (frasesConSesgo / totalFrases) * 100;
+        temperature.style.height = porcentajeSesgo + "%";
+        temperature.dataset.value = porcentajeSesgo.toFixed(2) + "%";
+      }
+      
+      
+      setTimeout(setTemperature, 1000);
+      
+    </script>
+
 
     
 {% endblock content %}

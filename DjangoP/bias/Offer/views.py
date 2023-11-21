@@ -87,9 +87,14 @@ def prompt(offer_id):
 def bias(request, id):
     offer = Offer.objects.get(pk=id)
     suggestion = Suggestion.objects.get(offer=offer)
+    q_offers = len([parte.strip() for parte in offer.description.split('.') if parte.strip()])
+    q_suggest = len([parte.strip() for parte in suggestion.highlight_words.split('.') if parte.strip()])
     context = {
         'offer': offer,
-        'suggestion': suggestion
+        'suggestion': suggestion,
+        'q_offers' : q_offers,
+        'q_suggest' : q_suggest
+        
     }
 
     return render(request, 'bias.html', context)
