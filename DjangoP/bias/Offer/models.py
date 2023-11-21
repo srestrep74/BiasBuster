@@ -23,6 +23,7 @@ class Offer(models.Model):
     bias = models.ManyToManyField(Bias)
     date = models.DateField(auto_now_add=True, null=True, blank=True)
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
+    analyzed = models.IntegerField(default=0)
 
     def __str__(self):
         return self.title

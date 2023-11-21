@@ -117,8 +117,6 @@
         top: calc(-1em / 2.2 + 5px);
       }
       
-      
-      
     </style>
     <br>
     <br>
@@ -131,16 +129,16 @@
         <!-- Sección izquierda -->
          <!-- Utilizamos items-stretch para que ambos elementos se expandan verticalmente -->
             <!-- Termómetro -->
-            <div class="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 flex-grow m-4">
-                <div id="wrapper">
-                    <div id="termometer">
-                        <div id="temperature" style="height: 0" data-value="0°C"></div>
-                        <div id="graduations"></div>
-                    </div>
-    
-                    
-                </div>
-            </div>
+            {% if offer.analyzed == 0 %}
+              <div class="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 flex-grow m-4">
+                  <div id="wrapper">
+                      <div id="termometer">
+                          <div id="temperature" style="height: 0" data-value="0°C"></div>
+                          <div id="graduations"></div>
+                      </div>
+                  </div>
+              </div>
+            {% endif %}
     
             <!-- Descripción -->
             <div class="bg-white border border-gray-200 rounded-lg shadow-md p-4 flex-grow m-4 flex  items-center">
@@ -157,60 +155,68 @@
 
             <div class="bg-white border border-gray-200 rounded-lg shadow-md p-4 flex-grow m-4 flex  items-center">
                 <div class="max-w-sm p-6 bg-white   flex flex-col items-center justify-center">
-                    
+                      {% if offer.analyzed == 0 %}
                         <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Oraciones con sesgo</h5>
                         <br>
                             {{suggestion.highlight_words}}
-                    
+                      {% else %}
+                        <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Felicidades, su oferta ya no tiene sesgos</h5>
+                      {% endif %}
                 </div>
             </div>
        
     <!--Stadistics-->
-    <div class="bg-white border border-gray-200 rounded-lg shadow-md p-4 flex-grow m-4 flex  items-center">
-        <div class="max-w-sm p-6 bg-white   flex flex-col items-center justify-center">  
-            
-                <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Estadísticas</h5>    
-                    <br>
-                <!--Graphics-->
-                {% for bias in offer.bias.all %}
-                    <div class="mb-1 text-base font-medium text-gray-700 dark:text-gray-400">{{ bias }}</div>
-                    <div class="w-full bg-gray-200 rounded-full h-2.5 mb-4 dark:bg-gray-700">
+    {% if offer.analyzed == 0 %}
+      <div class="bg-white border border-gray-200 rounded-lg shadow-md p-4 flex-grow m-4 flex  items-center">
+          <div class="max-w-sm p-6 bg-white   flex flex-col items-center justify-center">  
+              
+                  <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Estadísticas</h5>    
+                      <br>
+                  <!--Graphics-->
+                  {% for bias in offer.bias.all %}
+                      <div class="mb-1 text-base font-medium text-gray-700 dark:text-gray-400">{{ bias }}</div>
+                      <div class="w-full bg-gray-200 rounded-full h-2.5 mb-4 dark:bg-gray-700">
 
-                        {% if bias|lower == 'racismo' %}
-                            <div class="bg-red-600 h-2.5 rounded-full dark:bg-gray-300" style="width: 100%"></div>
-                        {% elif bias|lower == 'sexismo' %}
-                            <div class="bg-blue-600 h-2.5 rounded-full" style="width: 100%"></div>
-                        {% elif bias|lower == 'xenofobia' %}
-                            <div class="bg-green-600 h-2.5 rounded-full dark:bg-green-500" style="width: 100%"></div>
-                        {% elif bias|lower == 'homofobia' %}
-                            <div class="bg-yellow-400 h-2.5 rounded-full" style="width: 100%"></div>
-                        {% else %}
-                            <div style="width: 0%"></div>
-                        {% endif %}
-                    </div>
-                    <br>
-                {% endfor %}
-            
-        </div>
-    </div>
+                          {% if bias|lower == 'racismo' %}
+                              <div class="bg-red-600 h-2.5 rounded-full dark:bg-gray-300" style="width: 100%"></div>
+                          {% elif bias|lower == 'sexismo' %}
+                              <div class="bg-blue-600 h-2.5 rounded-full" style="width: 100%"></div>
+                          {% elif bias|lower == 'xenofobia' %}
+                              <div class="bg-green-600 h-2.5 rounded-full dark:bg-green-500" style="width: 100%"></div>
+                          {% elif bias|lower == 'homofobia' %}
+                              <div class="bg-yellow-400 h-2.5 rounded-full" style="width: 100%"></div>
+                          {% else %}
+                              <div style="width: 0%"></div>
+                          {% endif %}
+                      </div>
+                      <br>
+                  {% endfor %}
+              
+          </div>
+      </div>
+    {% endif %}
 
     <div class="bg-white border border-gray-200 rounded-lg shadow-md p-4 flex-grow m-4 flex  items-center">
         <div class="max-w-sm p-6 bg-white   flex flex-col items-center justify-center">
-           
+              {% if offer.analyzed == 0 %}
                 <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Sugerencias</h5>
+              {% else %}
+                <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Oferta antes</h5>
+              {% endif %}
                 <br>
                 <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
                     {{offer.title}}<br><br>
                     {{suggestion.corrected_description}}
                 </p>
                 <br>
-                <a href="{% url 'replace' offer.id %}" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                    Aplicar sugerencias
-                    <svg class="w-3.5 h-3.5 ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
-                    </svg>
-                </a>
-            
+                {% if offer.analyzed == 0 %}
+                  <a href="{% url 'replace' offer.id %}" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                      Aplicar sugerencias
+                      <svg class="w-3.5 h-3.5 ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+                      </svg>
+                  </a>
+                {% endif %}
         </div>
     </div>
         

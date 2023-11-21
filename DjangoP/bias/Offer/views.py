@@ -76,6 +76,7 @@ def prompt(offer_id):
 
     if flag == False:
         offer.bias.add(Bias.objects.get(pk=7))
+        offer.analyzed = 1
     
     suggestion = Suggestion(
         corrected_description=corrected_description,
@@ -104,7 +105,9 @@ def bias(request, id):
 def replaceOffer(request, id):
     offer = Offer.objects.get(pk=id)
     suggestion = Suggestion.objects.get(offer=offer)
-    offer.description = suggestion.corrected_description
+    offer.description, suggestion.corrected_description = suggestion.corrected_description, offer.description
+    offer.analyzed = 1
+    #offer.bias.add(Bias.objects.get(pk=7))
     offer.save()
 
     return redirect('drafts')
