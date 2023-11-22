@@ -107,7 +107,8 @@ def replaceOffer(request, id):
     suggestion = Suggestion.objects.get(offer=offer)
     offer.description, suggestion.corrected_description = suggestion.corrected_description, offer.description
     offer.analyzed = 1
-    #offer.bias.add(Bias.objects.get(pk=7))
+    offer.bias.clear()
+    offer.bias.add(Bias.objects.get(pk=7))
     offer.save()
 
     return redirect('drafts')

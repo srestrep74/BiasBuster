@@ -47,9 +47,9 @@ def graph_contains_bias(company_id, date_filter):
         month = today-timedelta(days=30)
         offers_total = Offer.objects.filter(company=company,date__gte=month).count()
 
-    offers_bias = Offer.objects.filter(company=company, bias__isnull=False).distinct().count()
+    offers_bias = Offer.objects.exclude(bias__type__icontains="Ninguno").filter(company=company).distinct()
 
-    return offers_total, offers_bias
+    return offers_total, offers_bias.count()
 
 
 def graph_by_bias(company_id, date_filter):
